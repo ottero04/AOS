@@ -1,0 +1,64 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "Plataforma de E-learning para X",
+      "shortDescription": "Plataforma educativa completa con cursos interactivos",
+      "longDescription": "Desarrollo de una plataforma de aprendizaje en línea con gestión de cursos, seguimiento de progreso, evaluaciones y certificaciones.",
+      "mainImage": "/images/projects/elearning.jpg",
+      "additionalImages": [],
+      "liveUrl": "https://example.com/elearning",
+      "status": "published",
+      "createdAt": "2024-01-15T00:00:00.000Z",
+      "updatedAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "title": "App de Logística para Y",
+      "shortDescription": "Sistema de gestión logística y seguimiento de envíos",
+      "longDescription": "Aplicación móvil y web para gestión de flotas, rastreo de envíos en tiempo real y optimización de rutas de entrega.",
+      "mainImage": "/images/projects/logistics.jpg",
+      "additionalImages": [],
+      "liveUrl": "https://example.com/logistics",
+      "status": "published",
+      "createdAt": "2024-02-20T00:00:00.000Z",
+      "updatedAt": "2024-02-20T00:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "title": "Sitio Web B2B Z",
+      "shortDescription": "Portal corporativo B2B con catálogo y cotizaciones",
+      "longDescription": "Sitio web empresarial con catálogo de productos, sistema de cotizaciones en línea e integración con ERP.",
+      "mainImage": "/images/projects/b2b.jpg",
+      "additionalImages": [],
+      "liveUrl": "https://example.com/b2b",
+      "status": "published",
+      "createdAt": "2024-03-10T00:00:00.000Z",
+      "updatedAt": "2024-03-10T00:00:00.000Z"
+    },
+    {
+      "title": "Zyla",
+      "shortDescription": "Landing page moderna para una app de productividad personal.",
+      "longDescription": "Zyla es un proyecto de diseño y desarrollo frontend que consiste en una landing page completa para una aplicación de productividad. La página incluye una sección hero con animaciones fluidas, un marquee de características, cards de funcionalidades, un mockup visual de la app, testimonios de usuarios y una sección de llamada a la acción. Desarrollada con HTML, CSS y JavaScript puro, sin frameworks, optimizada para desplegarse en Vercel como sitio estático. El diseño usa una paleta colorida con tipografía Syne y DM Sans, blobs animados y un estilo visual moderno y llamativo.",
+      "mainImage": "/images/projects/zyla.png",
+      "additionalImages": [],
+      "liveUrl": "https://zyla-peach.vercel.app/",
+      "status": "published",
+      "id": "0d2a5dc6-b224-461b-b427-1dd3f8c98380",
+      "createdAt": "2026-03-28T21:22:16.499Z",
+      "updatedAt": "2026-03-28T21:22:45.347Z"
+    },
+    {
+      "title": "NVΛO Tech Store",
+      "shortDescription": "Tienda online de gadgets y tecnología con estilo retrofuturista.",
+      "longDescription": "NVΛO es un proyecto de diseño y desarrollo frontend que consiste en una tienda de tecnología y gadgets de alta gama. La página incluye una sección hero con grid animado y efectos de neón, un ticker de beneficios, estadísticas de la tienda, una grilla de 6 productos con badges de estado (Nuevo, Popular, Oferta), sección de producto estrella con especificaciones técnicas, formulario de newsletter y footer. Desarrollada con HTML, CSS y JavaScript puro, sin frameworks, con un estilo retrofuturista oscuro inspirado en interfaces de ciencia ficción. Incluye interactividad básica como carrito funcional con contador en tiempo real. Lista para desplegar en Vercel como sitio estático.",
+      "mainImage": "https://sjw03qlummujnzlc.public.blob.vercel-storage.com/projects/1774747826266.png",
+      "additionalImages": [],
+      "liveUrl": "https://nova-drab.vercel.app/",
+      "status": "published",
+      "id": "a02ffbb5-bbb3-4d38-ae06-d140140645b2",
+      "createdAt": "2026-03-29T01:30:54.348Z",
+      "updatedAt": "2026-03-29T01:30:54.348Z"
+    }
+  ]
+}
