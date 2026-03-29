@@ -1,20 +1,41 @@
-import { promises as fs } from "fs"
-import path from "path"
+import { put, list } from "@vercel/blob"
 import type { Project } from "./types"
-
-const DATA_FILE = path.join(process.cwd(), "data", "projects.json")
 
 interface ProjectsData {
   projects: Project[]
 }
 
+async function getProjectsUrl(): Promise<string | null> {
+  try {
+    const { blobs } = await list({ prefix: "projects.json" })
+    if (blobs.length === 0) return null
+    return blobs[0].url
+  } catch {
+    return null
+  }
+}
+
 export async function getProjects(): Promise<Project[]> {
   try {
+    const url = await getProjectsUrl()
+    if (!url) return getLocalProjects()
+    const res = await fetch(url, { cache: "no-store" })
+    const { projects } = await res.json() as ProjectsData
+    return projects
+  } catch {
+    return getLocalProjects()
+  }
+}
+
+async function getLocalProjects(): Promise<Project[]> {
+  try {
+    const { promises: fs } = await import("fs")
+    const path = await import("path")
+    const DATA_FILE = path.join(process.cwd(), "data", "projects.json")
     const data = await fs.readFile(DATA_FILE, "utf-8")
     const { projects } = JSON.parse(data) as ProjectsData
     return projects
-  } catch (error) {
-    console.error("Error reading projects:", error)
+  } catch {
     return []
   }
 }
@@ -30,33 +51,25 @@ export async function getProjectById(id: string): Promise<Project | null> {
 }
 
 export async function saveProjects(projects: Project[]): Promise<void> {
-  try {
-    await fs.writeFile(
-      DATA_FILE,
-      JSON.stringify({ projects }, null, 2),
-      "utf-8"
-    )
-  } catch (error) {
-    console.error("Error saving projects:", error)
-    throw error
-  }
+  await put("projects.json", JSON.stringify({ projects }, null, 2), {
+    access: "public",
+    contentType: "application/json",
+    allowOverwrite: true,
+  })
 }
 
 export async function createProject(
   projectData: Omit<Project, "id" | "createdAt" | "updatedAt">
 ): Promise<Project> {
   const projects = await getProjects()
-
   const newProject: Project = {
     ...projectData,
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }
-
   projects.push(newProject)
   await saveProjects(projects)
-
   return newProject
 }
 
@@ -66,28 +79,22 @@ export async function updateProject(
 ): Promise<Project | null> {
   const projects = await getProjects()
   const index = projects.findIndex((p) => p.id === id)
-
   if (index === -1) return null
-
   const updatedProject: Project = {
     ...projects[index],
     ...updates,
-    id, // Ensure ID doesn't change
+    id,
     updatedAt: new Date().toISOString(),
   }
-
   projects[index] = updatedProject
   await saveProjects(projects)
-
   return updatedProject
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
   const projects = await getProjects()
   const filtered = projects.filter((p) => p.id !== id)
-
   if (filtered.length === projects.length) return false
-
   await saveProjects(filtered)
   return true
 }

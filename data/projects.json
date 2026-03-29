@@ -8,9 +8,9 @@
       "mainImage": "/images/projects/elearning.jpg",
       "additionalImages": [],
       "liveUrl": "https://example.com/elearning",
-      "status": "published",
+      "status": "draft",
       "createdAt": "2024-01-15T00:00:00.000Z",
-      "updatedAt": "2024-01-15T00:00:00.000Z"
+      "updatedAt": "2026-03-29T19:27:06.736Z"
     },
     {
       "id": "2",
@@ -20,9 +20,9 @@
       "mainImage": "/images/projects/logistics.jpg",
       "additionalImages": [],
       "liveUrl": "https://example.com/logistics",
-      "status": "published",
+      "status": "draft",
       "createdAt": "2024-02-20T00:00:00.000Z",
-      "updatedAt": "2024-02-20T00:00:00.000Z"
+      "updatedAt": "2026-03-29T19:27:03.288Z"
     },
     {
       "id": "3",
@@ -32,9 +32,9 @@
       "mainImage": "/images/projects/b2b.jpg",
       "additionalImages": [],
       "liveUrl": "https://example.com/b2b",
-      "status": "published",
+      "status": "draft",
       "createdAt": "2024-03-10T00:00:00.000Z",
-      "updatedAt": "2024-03-10T00:00:00.000Z"
+      "updatedAt": "2026-03-29T19:27:08.806Z"
     },
     {
       "title": "Zyla",
