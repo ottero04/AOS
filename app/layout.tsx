@@ -10,13 +10,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'AOS - Tecnologia en la que puedes confiar | AOteSoft',
+  title: 'AOS | AOteSoft',
   description: 'Transformamos ideas en soluciones tecnologicas solidas. Desarrollo de software a medida, e-commerce, consultoria tecnologica y mantenimiento profesional.',
   keywords: ['software a medida', 'desarrollo web', 'e-commerce', 'consultoria tecnologica', 'AOteSoft', 'Colombia'],
   authors: [{ name: 'AOteSoft' }],
   icons: {
-    icon: '/images/aoslogoo.png',
-    apple: '/images/aoslogoo.png',
+    icon: '/images/favicon3.png',
+    apple: '/images/favicon3.png',
   },
   openGraph: {
     title: 'AOS - Tecnologia en la que puedes confiar',
