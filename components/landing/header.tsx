@@ -7,12 +7,12 @@ import { Menu, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navLinks = [
-  { href: "#inicio", label: "Inicio" },
-  { href: "#nosotros", label: "Nosotros" },
-  { href: "#servicios", label: "Servicios" },
-  { href: "#automatizacion", label: "AOS Flow" },
-  { href: "#proyectos", label: "Proyectos" },
-  { href: "#contacto", label: "Contacto" },
+  { href: "/#inicio", label: "Inicio" },
+  { href: "/#nosotros", label: "Nosotros" },
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/#automatizacion", label: "AOS Flow" },
+  { href: "/#proyectos", label: "Proyectos" },
+  { href: "/#contacto", label: "Contacto" },
 ]
 
 export function Header() {
@@ -51,8 +51,8 @@ export function Header() {
           {/* CTA Button */}
           <div className="hidden lg:block">
             <Button asChild className="bg-cyan-500 hover:bg-cyan-600 text-white gap-2 px-6 py-2 h-11">
-              <Link href="#contacto">
-                Solicitar Cotizacion
+              <Link href="/#contacto">
+                Solicitar cotización
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -85,8 +85,8 @@ export function Header() {
               </Link>
             ))}
             <Button asChild className="w-full bg-cyan-500 hover:bg-cyan-600 text-white mt-4 h-11">
-              <Link href="#contacto" onClick={() => setMobileMenuOpen(false)}>
-                Solicitar Cotizacion
+              <Link href="/#contacto" onClick={() => setMobileMenuOpen(false)}>
+                Solicitar cotización
               </Link>
             </Button>
           </nav>

@@ -98,3 +98,16 @@ export async function deleteProject(id: string): Promise<boolean> {
   await saveProjects(filtered)
   return true
 }
+/** Destacados para el carrusel; si no hay ninguno marcado, los más recientes. */
+export async function getFeaturedProjects(limit = 6): Promise<Project[]> {
+  const published = (await getPublishedProjects()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
+  const featured = published.filter((p) => p.featured)
+  return (featured.length > 0 ? featured : published).slice(0, limit)
+}
+
+export async function getPublishedProjectById(id: string): Promise<Project | null> {
+  const project = await getProjectById(id)
+  return project && project.status === "published" ? project : null
+}

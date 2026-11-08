@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import '@fontsource-variable/plus-jakarta-sans'
 import './globals.css'
 
 const inter = Inter({ 
@@ -10,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'AOS | AOteSoft',
-  description: 'Transformamos ideas en soluciones tecnologicas solidas. Desarrollo de software a medida, e-commerce, consultoria tecnologica y mantenimiento profesional.',
+  title: { default: 'AOS | AOteSoft', template: '%s | AOS' },
+  description: 'Desarrollo de software a medida y automatización de procesos e informes para empresas en Colombia.',
   keywords: ['software a medida', 'desarrollo web', 'e-commerce', 'consultoria tecnologica', 'AOteSoft', 'Colombia'],
   authors: [{ name: 'AOteSoft' }],
   icons: {
@@ -19,8 +20,8 @@ export const metadata: Metadata = {
     apple: '/images/favicon3.png',
   },
   openGraph: {
-    title: 'AOS - Tecnologia en la que puedes confiar',
-    description: 'Transformamos ideas en soluciones tecnologicas solidas.',
+    title: 'AOS - Tecnología en la que puedes confiar',
+    description: 'Software a medida y automatización de procesos para tu empresa.',
     type: 'website',
   },
 }

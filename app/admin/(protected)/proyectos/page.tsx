@@ -77,14 +77,24 @@ export default function ProjectsPage() {
         body: JSON.stringify(projectData),
       })
 
-      if (response.ok) {
-        fetchProjects()
-        setSelectedProject(null)
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.error || "No se pudo guardar el proyecto")
       }
+      fetchProjects()
     } catch (error) {
       console.error("Error saving project:", error)
       throw error
     }
+  }
+
+  const handleToggleFeatured = async (projectId: string, featured: boolean) => {
+    const response = await fetch("/api/projects", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: projectId, featured }),
+    })
+    if (response.ok) fetchProjects()
   }
 
   const handleAddNew = () => {
@@ -185,6 +195,7 @@ export default function ProjectsPage() {
               key={project.id}
               project={project}
               onEdit={handleEdit}
+              onToggleFeatured={handleToggleFeatured}
               onDelete={handleDelete}
               onToggleStatus={handleToggleStatus}
             />

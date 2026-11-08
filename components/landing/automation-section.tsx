@@ -1,15 +1,16 @@
 import Link from "next/link"
 import {
-  Mail,
-  Filter,
-  FileText,
-  FolderCheck,
-  Scale,
-  BarChart3,
-  Receipt,
-  BellRing,
-  Clock,
-  ShieldCheck,
+  Inbox,
+  GitBranch,
+  FileCog,
+  Archive,
+  FolderKanban,
+  LineChart,
+  Plug,
+  ShieldAlert,
+  Gauge,
+  ScrollText,
+  Layers,
   Sparkles,
   ArrowRight,
   CheckCircle2,
@@ -18,39 +19,43 @@ import { Button } from "@/components/ui/button"
 import { CATEGORY_LABELS, whatsappUrl, type PublicAutomation, type SiteContent } from "@/lib/content"
 
 const steps = [
-  { icon: Mail, title: "Llega la información", text: "Correos, formularios, Excel o tus apps de siempre." },
-  { icon: Filter, title: "Se clasifica sola", text: "Por remitente, asunto, cliente, ciudad o lo que necesites." },
-  { icon: FileText, title: "Se genera el documento", text: "PDF, informe o reporte con el formato de tu empresa." },
-  { icon: FolderCheck, title: "Queda organizada", text: "En carpetas de Google Drive, listas para consultar." },
+  { icon: Inbox, title: "Captura", text: "Correos, adjuntos, formularios y hojas de cálculo entran al flujo sin intervención." },
+  { icon: GitBranch, title: "Clasificación", text: "Reglas de negocio por remitente, asunto, cliente, entidad o ubicación." },
+  { icon: FileCog, title: "Procesamiento", text: "Generación de PDF e informes con nomenclatura y formato estandarizados." },
+  { icon: Archive, title: "Entrega y archivo", text: "Distribución a responsables y archivo estructurado en la nube." },
 ]
 
-const useCases = [
+const capabilities = [
   {
-    icon: Scale,
-    title: "Despachos y oficinas jurídicas",
-    text: "Radicados y notificaciones guardados en PDF y archivados por departamento y municipio, sin descargar uno por uno.",
+    icon: FolderKanban,
+    title: "Gestión documental automatizada",
+    text: "Captura, clasificación y archivo de documentos entrantes —radicados, notificaciones, soportes— con reglas de negocio y estructura de carpetas por expediente, entidad o territorio.",
+    tags: ["Gmail / Outlook", "Google Drive", "PDF"],
   },
   {
-    icon: BarChart3,
-    title: "Informes automáticos",
-    text: "Reportes diarios, semanales o mensuales armados desde tus hojas de cálculo y enviados a quien corresponda.",
+    icon: LineChart,
+    title: "Reportería e informes programados",
+    text: "Consolidación de datos desde hojas de cálculo, formularios y sistemas internos para producir informes periódicos listos para revisión y envío.",
+    tags: ["Google Sheets", "Excel", "Programación"],
   },
   {
-    icon: Receipt,
-    title: "Facturas y soportes",
-    text: "Adjuntos de proveedores y clientes descargados, renombrados y ordenados por fecha automáticamente.",
+    icon: Plug,
+    title: "Integración entre aplicaciones",
+    text: "Conectamos las herramientas que ya usas mediante APIs para eliminar la doble digitación y mantener la información sincronizada.",
+    tags: ["Google Workspace", "Microsoft 365", "APIs"],
   },
   {
-    icon: BellRing,
-    title: "Alertas y seguimiento",
-    text: "Avisos por correo cuando llega algo importante o cuando una tarea queda pendiente.",
+    icon: ShieldAlert,
+    title: "Control de plazos y alertas",
+    text: "Seguimiento de vencimientos y eventos críticos con notificaciones automáticas y una bitácora que deja trazabilidad de cada acción.",
+    tags: ["Notificaciones", "Bitácora", "Trazabilidad"],
   },
 ]
 
 const benefits = [
-  { icon: Clock, title: "Recupera horas", text: "Lo repetitivo se hace solo, tu equipo se enfoca en lo importante." },
-  { icon: ShieldCheck, title: "Cero olvidos", text: "Cada documento queda guardado y trazable, sin errores manuales." },
-  { icon: Sparkles, title: "Con tus herramientas", text: "Trabajamos sobre Gmail, Drive y Sheets: no cambias de sistema." },
+  { icon: Gauge, title: "Menos carga operativa", text: "El equipo deja de descargar, renombrar y ordenar a mano." },
+  { icon: ScrollText, title: "Trazabilidad completa", text: "Cada documento procesado queda registrado y es fácil de ubicar." },
+  { icon: Layers, title: "Sobre tu ecosistema", text: "Implementamos sobre tus herramientas actuales, sin migraciones." },
 ]
 
 export function AutomationSection({ content, cases }: { content: SiteContent; cases: PublicAutomation[] }) {
@@ -80,14 +85,14 @@ export function AutomationSection({ content, cases }: { content: SiteContent; ca
             Nuevo · AOS Flow
           </span>
           <h2 className="mt-6 text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Tus apps trabajando{" "}
+            Automatización de procesos{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
-              solas por ti
+              e informes
             </span>
           </h2>
           <p className="mt-5 text-lg text-blue-100/75">
-            Automatizamos las tareas que hoy haces a mano: correos que se convierten en PDF,
-            informes que se arman solos y documentos que llegan ordenados a tu Drive.
+            Diseñamos flujos que capturan, procesan y organizan la información de tu operación de forma
+            automática, para que tu equipo dedique su tiempo a decisiones y no a tareas repetitivas.
           </p>
         </div>
 
@@ -147,23 +152,30 @@ export function AutomationSection({ content, cases }: { content: SiteContent; ca
           </div>
         )}
 
-        {/* Casos de uso */}
+        {/* Capacidades */}
         <div className="mt-20">
-          <h3 className="text-center text-sm font-semibold uppercase tracking-wider text-cyan-300">
-            ¿Qué podemos automatizar?
-          </h3>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2">
-            {useCases.map((uc) => (
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-cyan-300">Capacidades</h3>
+            <p className="mt-3 text-2xl font-bold text-white sm:text-3xl">Soluciones a la medida de tu operación</p>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            {capabilities.map((c) => (
               <div
-                key={uc.title}
-                className="group flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:bg-white/10"
+                key={c.title}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 transition-all hover:border-cyan-400/40 hover:bg-white/[0.07]"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/20">
-                  <uc.icon className="h-6 w-6 text-white" />
+                <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-cyan-400/10 blur-2xl transition-opacity group-hover:opacity-100 opacity-0" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/20">
+                  <c.icon className="h-6 w-6 text-white" />
                 </div>
-                <div>
-                  <h4 className="font-semibold text-white">{uc.title}</h4>
-                  <p className="mt-1.5 text-sm leading-relaxed text-blue-100/65">{uc.text}</p>
+                <h4 className="mt-5 text-lg font-bold text-white">{c.title}</h4>
+                <p className="mt-2 text-sm leading-relaxed text-blue-100/70">{c.text}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {c.tags.map((t) => (
+                    <span key={t} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-blue-100/80">
+                      {t}
+                    </span>
+                  ))}
                 </div>
               </div>
             ))}
@@ -190,12 +202,12 @@ export function AutomationSection({ content, cases }: { content: SiteContent; ca
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Quiero automatizar
+                Solicitar diagnóstico
                 <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>
             <Button asChild size="lg" variant="ghost" className="h-12 text-blue-100 hover:bg-white/10 hover:text-white">
-              <Link href="#contacto">Contar mi caso</Link>
+              <Link href="#contacto">Escribir por correo</Link>
             </Button>
           </div>
         </div>

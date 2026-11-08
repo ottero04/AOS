@@ -1,88 +1,41 @@
-import Image from "next/image";
-import { ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { getPublishedProjects } from "@/lib/projects";
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { getFeaturedProjects, getPublishedProjects } from "@/lib/projects"
+import { ProjectsCarousel } from "./projects-carousel"
 
 export async function ProjectsSection() {
   // Se leen los proyectos guardados desde el panel (Vercel Blob),
   // con respaldo en data/projects.json si no hay conexión.
-  const publishedProjects = await getPublishedProjects();
+  const [featured, all] = await Promise.all([getFeaturedProjects(6), getPublishedProjects()])
 
   return (
-    <section id="proyectos" className="py-20 lg:py-28 bg-slate-50">
+    <section id="proyectos" className="bg-slate-50 py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">
-            Portafolio
-          </span>
-          <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-slate-900">
-            Proyectos Destacados
-          </h2>
-          <p className="mt-4 text-lg text-slate-600">
-            Conoce algunos de los proyectos que hemos desarrollado.
-          </p>
+        <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">Portafolio</span>
+            <h2 className="mt-4 text-3xl font-extrabold text-slate-900 sm:text-4xl">Proyectos destacados</h2>
+            <p className="mt-4 text-lg text-slate-600">Algunos de los proyectos que hemos diseñado y desarrollado.</p>
+          </div>
+          {all.length > 0 && (
+            <Button asChild variant="outline" className="h-11 shrink-0 gap-2 border-slate-300 bg-white px-5">
+              <Link href="/proyectos">
+                Ver todos los proyectos ({all.length})
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          )}
         </div>
 
-        {/* Projects Grid */}
-        {publishedProjects.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {publishedProjects.map((project) => (
-              <article
-                key={project.id}
-                className="group bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300"
-              >
-                {/* Image */}
-                <div className="relative aspect-video overflow-hidden bg-slate-100">
-                  {project.mainImage ? (
-                    <Image
-                      src={project.mainImage}
-                      alt={project.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-slate-400 text-sm">
-                      Sin imagen
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="mt-2 text-slate-500 text-sm line-clamp-2">
-                    {project.shortDescription}
-                  </p>
-
-                  {/^https?:\/\//.test(project.liveUrl || "") && (
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="mt-4 gap-2 border-blue-200 text-blue-600 hover:bg-blue-50"
-                    >
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                        Ver Proyecto
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
+        {featured.length > 0 ? (
+          <ProjectsCarousel projects={featured} />
         ) : (
-          <div className="text-center py-16 bg-white rounded-xl border border-dashed border-slate-300">
-            <p className="text-slate-500">Proximamente nuevos proyectos</p>
+          <div className="rounded-3xl border border-dashed border-slate-300 bg-white py-16 text-center">
+            <p className="text-slate-500">Próximamente nuevos proyectos</p>
           </div>
         )}
       </div>
     </section>
-  );
+  )
 }
