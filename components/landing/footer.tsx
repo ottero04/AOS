@@ -4,12 +4,12 @@ import { Facebook, Instagram, Mail, MapPin, X } from "lucide-react"
 import type { SiteContent } from "@/lib/content"
 
 const footerLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "AOS Flow", href: "#automatizacion" },
-  { label: "Proyectos", href: "#proyectos" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Nosotros", href: "/#nosotros" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "AOS Flow", href: "/#automatizacion" },
+  { label: "Proyectos", href: "/#proyectos" },
+  { label: "Contacto", href: "/#contacto" },
 ]
 
 export function Footer({ content }: { content: SiteContent }) {
@@ -35,12 +35,12 @@ export function Footer({ content }: { content: SiteContent }) {
               />
             </Link>
             <p className="mt-4 text-slate-400 text-sm leading-relaxed">
-              Tecnologia en la que puedes confiar. Soluciones digitales que impulsan tu negocio.
+              Tecnología en la que puedes confiar. Soluciones digitales que impulsan tu negocio.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-white mb-4">Navegacion</h3>
+            <h3 className="font-semibold text-white mb-4">Navegación</h3>
             <ul className="space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.href}>
@@ -75,7 +75,7 @@ export function Footer({ content }: { content: SiteContent }) {
 
           {socialLinks.length > 0 && (
             <div>
-              <h3 className="font-semibold text-white mb-4">Siguenos</h3>
+              <h3 className="font-semibold text-white mb-4">Síguenos</h3>
               <div className="flex gap-3">
                 {socialLinks.map((social) => (
                   <a

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { MoreVertical, Pencil, Trash2, Globe } from "lucide-react"
+import { MoreVertical, Pencil, Trash2, Globe, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +18,10 @@ interface ProjectCardProps {
   onEdit: (project: Project) => void
   onDelete: (projectId: string) => void
   onToggleStatus: (projectId: string, status: "draft" | "published") => void
+  onToggleFeatured?: (projectId: string, featured: boolean) => void
 }
 
-export function ProjectCard({ project, onEdit, onDelete, onToggleStatus }: ProjectCardProps) {
+export function ProjectCard({ project, onEdit, onDelete, onToggleStatus, onToggleFeatured }: ProjectCardProps) {
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-video bg-muted" style={{ position: 'relative' }}>
@@ -35,6 +36,19 @@ export function ProjectCard({ project, onEdit, onDelete, onToggleStatus }: Proje
           <div className="flex h-full items-center justify-center text-muted-foreground">
             Sin imagen
           </div>
+        )}
+        {onToggleFeatured && (
+          <button
+            type="button"
+            onClick={() => onToggleFeatured(project.id, !project.featured)}
+            title={project.featured ? "Quitar de destacados" : "Marcar como destacado"}
+            className={`absolute left-2 top-2 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium shadow-sm transition-colors ${
+              project.featured ? "bg-amber-400 text-amber-950" : "bg-white/85 text-slate-600 hover:bg-white"
+            }`}
+          >
+            <Star className={`h-3.5 w-3.5 ${project.featured ? "fill-current" : ""}`} />
+            {project.featured ? "Destacado" : "Destacar"}
+          </button>
         )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -17,7 +17,7 @@ export function ContactSection({ content }: { content: SiteContent }) {
 
   const contactInfo = [
     { icon: Mail, label: "Email", value: content.email, href: `mailto:${content.email}` },
-    ...(content.location ? [{ icon: MapPin, label: "Ubicacion", value: content.location, href: "" }] : []),
+    ...(content.location ? [{ icon: MapPin, label: "Ubicación", value: content.location, href: "" }] : []),
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,7 +49,7 @@ export function ContactSection({ content }: { content: SiteContent }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Contacto</span>
-          <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-slate-900">Hablemos de tu Proyecto</h2>
+          <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900">Hablemos de tu proyecto</h2>
           <p className="mt-4 text-lg text-slate-600">Estamos listos para convertir tu idea en realidad.</p>
         </div>
 
@@ -60,7 +60,7 @@ export function ContactSection({ content }: { content: SiteContent }) {
                 <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
                   <Send className="h-8 w-8 text-green-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900">Mensaje Enviado</h3>
+                <h3 className="text-xl font-semibold text-slate-900">Mensaje enviado</h3>
                 <p className="mt-2 text-slate-600">Gracias por contactarnos. Te responderemos pronto.</p>
                 <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
                   Enviar otro mensaje
@@ -108,7 +108,7 @@ export function ContactSection({ content }: { content: SiteContent }) {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Mensaje</label>
                   <Textarea
-                    placeholder="Cuentanos sobre tu proyecto..."
+                    placeholder="Cuéntanos sobre tu proyecto..."
                     value={formData.mensaje}
                     onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
                     required
@@ -125,7 +125,7 @@ export function ContactSection({ content }: { content: SiteContent }) {
                   className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+                  {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                 </Button>
               </form>
             )}
@@ -133,8 +133,8 @@ export function ContactSection({ content }: { content: SiteContent }) {
 
           <div className="flex flex-col justify-center">
             <div className="bg-green-50 rounded-2xl p-6 mb-8 border border-green-200">
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">Contacto Rapido</h3>
-              <p className="text-slate-600 mb-4">Escribenos por WhatsApp para una respuesta inmediata.</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Contacto rápido</h3>
+              <p className="text-slate-600 mb-4">Escríbenos por WhatsApp para una respuesta inmediata.</p>
               <Button asChild className="w-full h-12 gap-2 bg-green-600 hover:bg-green-700 text-white">
                 <a href={whatsapp} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="h-5 w-5" />

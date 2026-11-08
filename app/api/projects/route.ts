@@ -20,6 +20,10 @@ function sanitize(body: any) {
       : [],
     liveUrl: safeUrl(body.liveUrl),
     status: safeStatus(body.status),
+    featured: body.featured === true,
+    tags: Array.isArray(body.tags)
+      ? body.tags.map((t: unknown) => safeText(t, 30)).filter(Boolean).slice(0, 8)
+      : [],
   }
 }
 
@@ -47,7 +51,7 @@ export async function POST(request: Request) {
     }
     const project = await createProject(data)
     await logActivity("proyecto_creado", data.title)
-    revalidatePath("/")
+    revalidatePath("/"); revalidatePath("/proyectos", "layout")
     return NextResponse.json({ project })
   } catch (error) {
     console.error("Error creating project:", error)
@@ -68,7 +72,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Proyecto no encontrado" }, { status: 404 })
     }
     await logActivity("proyecto_editado", project.title)
-    revalidatePath("/")
+    revalidatePath("/"); revalidatePath("/proyectos", "layout")
     return NextResponse.json({ project })
   } catch (error) {
     console.error("Error updating project:", error)
@@ -84,15 +88,20 @@ export async function PATCH(request: Request) {
     if (!body?.id) {
       return NextResponse.json({ error: "ID de proyecto requerido" }, { status: 400 })
     }
-    const project = await updateProject(String(body.id), { status: safeStatus(body.status) })
+    const changes: { status?: "draft" | "published"; featured?: boolean } = {}
+    if (body.status !== undefined) changes.status = safeStatus(body.status)
+    if (body.featured !== undefined) changes.featured = body.featured === true
+    const project = await updateProject(String(body.id), changes)
     if (!project) {
       return NextResponse.json({ error: "Proyecto no encontrado" }, { status: 404 })
     }
     await logActivity(
-      project.status === "published" ? "proyecto_publicado" : "proyecto_ocultado",
+      body.featured !== undefined
+        ? (project.featured ? "proyecto_destacado" : "proyecto_no_destacado")
+        : project.status === "published" ? "proyecto_publicado" : "proyecto_ocultado",
       project.title
     )
-    revalidatePath("/")
+    revalidatePath("/"); revalidatePath("/proyectos", "layout")
     return NextResponse.json({ project })
   } catch (error) {
     console.error("Error updating project status:", error)
@@ -113,7 +122,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Proyecto no encontrado" }, { status: 404 })
     }
     await logActivity("proyecto_eliminado", id)
-    revalidatePath("/")
+    revalidatePath("/"); revalidatePath("/proyectos", "layout")
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Error deleting project:", error)

@@ -7,6 +7,8 @@ export interface Project {
   additionalImages: string[]
   liveUrl: string
   status: 'draft' | 'published'
+  featured?: boolean
+  tags?: string[]
   createdAt: string
   updatedAt: string
 }

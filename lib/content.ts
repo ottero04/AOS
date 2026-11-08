@@ -16,10 +16,10 @@ export interface SiteContent {
 }
 
 export const DEFAULT_CONTENT: SiteContent = {
-  heroTitle: "Soluciones Tecnologicas",
-  heroHighlight: "para tu Negocio",
+  heroTitle: "Software y automatización",
+  heroHighlight: "que hacen crecer tu empresa",
   heroSubtitle:
-    "Desarrollamos software a medida que impulsa el crecimiento de tu empresa. Confiabilidad, innovacion y resultados garantizados.",
+    "Diseñamos plataformas web y flujos automáticos que eliminan el trabajo repetitivo: documentos, informes y procesos que se ejecutan solos, con seguridad de nivel empresarial.",
   whatsappNumber: "573177300185",
   whatsappMessage: "Hola, estoy interesado en crear una página web y quisiera recibir una cotización",
   email: "contactanos@aotesoft.com",
@@ -59,6 +59,25 @@ export const CATEGORY_LABELS: Record<string, string> = {
   documentos: "Documentos",
   notificaciones: "Notificaciones",
   otro: "Otro",
+}
+
+export interface SiteStats {
+  reports: number
+  activeAutomations: number
+}
+
+export async function getSiteStats(): Promise<SiteStats> {
+  if (!hasDb()) return { reports: 0, activeAutomations: 0 }
+  try {
+    const { sql } = await import("./db")
+    const rows = await sql<{ reports: string; active: string }>(
+      `SELECT COALESCE(SUM(reports_count),0) AS reports,
+              COUNT(*) FILTER (WHERE status = 'activa') AS active FROM automations`
+    )
+    return { reports: Number(rows[0]?.reports ?? 0), activeAutomations: Number(rows[0]?.active ?? 0) }
+  } catch {
+    return { reports: 0, activeAutomations: 0 }
+  }
 }
 
 export async function getPublicAutomations(): Promise<PublicAutomation[]> {

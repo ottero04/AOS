@@ -12,18 +12,18 @@ import {
 const services = [
   {
     icon: Code2,
-    title: "Software a Medida",
+    title: "Software a medida",
     description: "Soluciones personalizadas para las necesidades de tu negocio.",
   },
   {
     icon: ShoppingCart,
     title: "E-commerce",
-    description: "Tiendas online optimizadas con pasarelas de pago seguras.",
+    description: "Tiendas en línea con pasarelas de pago seguras.",
   },
   {
     icon: Settings2,
-    title: "Consultoria Tech",
-    description: "Asesoramos en la adopcion de nuevas tecnologias.",
+    title: "Consultoría tecnológica",
+    description: "Te asesoramos en la adopción de nuevas tecnologías.",
   },
   {
     icon: Wrench,
@@ -32,18 +32,18 @@ const services = [
   },
   {
     icon: Monitor,
-    title: "Apps de Escritorio",
+    title: "Apps de escritorio",
     description: "Aplicaciones nativas para Windows, Mac y Linux.",
   },
   {
     icon: Smartphone,
-    title: "Apps Moviles",
-    description: "Desarrollo de aplicaciones para iOS y Android.",
+    title: "Apps móviles",
+    description: "Aplicaciones para iOS y Android.",
   },
   {
     icon: Database,
-    title: "Bases de Datos",
-    description: "Diseño y optimizacion de bases de datos.",
+    title: "Bases de datos",
+    description: "Diseño y optimización de bases de datos.",
   },
   {
     icon: Workflow,
@@ -61,13 +61,13 @@ export function ServicesSection() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">
-            Nuestros Servicios
+            Nuestros servicios
           </span>
-          <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-slate-900">
-            Soluciones Integrales para tu Negocio
+          <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-900">
+            Soluciones integrales para tu negocio
           </h2>
           <p className="mt-4 text-lg text-slate-600">
-            Ofrecemos servicios tecnologicos completos para cubrir todas tus necesidades digitales.
+            Ofrecemos servicios tecnológicos completos para cubrir todas tus necesidades digitales.
           </p>
         </div>
 

@@ -23,6 +23,8 @@ const ACTION_LABELS: Record<string, string> = {
   proyecto_publicado: "Proyecto publicado",
   proyecto_ocultado: "Proyecto ocultado",
   proyecto_eliminado: "Proyecto eliminado",
+  proyecto_destacado: "Proyecto destacado",
+  proyecto_no_destacado: "Proyecto quitado de destacados",
   automatizacion_creada: "Automatización creada",
   automatizacion_editada: "Automatización editada",
   automatizacion_eliminada: "Automatización eliminada",
