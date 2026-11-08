@@ -12,6 +12,7 @@ export interface SiteContent {
   location: string
   facebookUrl: string
   instagramUrl: string
+  tiktokUrl: string
   xUrl: string
 }
 
@@ -26,6 +27,7 @@ export const DEFAULT_CONTENT: SiteContent = {
   location: "Colombia",
   facebookUrl: "",
   instagramUrl: "",
+  tiktokUrl: "",
   xUrl: "",
 }
 

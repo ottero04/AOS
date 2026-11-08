@@ -12,7 +12,7 @@ Next.js en Vercel. Panel privado en `/admin/login` (cualquier otra ruta de `/adm
 | `DATABASE_URL` | Sí | La pone Vercel al conectar la base de datos (Storage → Neon) |
 | `BLOB_READ_WRITE_TOKEN` | Sí | La pone Vercel al conectar Blob (imágenes de proyectos) |
 | `RESEND_API_KEY` | Opcional | Envía a tu correo cada mensaje del formulario de contacto |
-| `CONTACT_TO_EMAIL` | Opcional | Correo que recibe los avisos (por defecto contactanos@aotesoft.com) |
+| `CONTACT_TO_EMAIL` | Opcional | Correo de respaldo para los avisos (lo normal es configurarlo en el panel → Configuración → Contenido → Notificaciones) |
 | `CONTACT_FROM_EMAIL` | Opcional | Remitente verificado en Resend, ej. `AOS Web <web@aotesoft.com>` |
 
 Las tablas de la base de datos se crean solas la primera vez.

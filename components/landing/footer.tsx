@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Facebook, Instagram, Mail, MapPin, X } from "lucide-react"
+import { Mail, MapPin } from "lucide-react"
+import { SocialLinks, getSocialLinks } from "./social-links"
 import type { SiteContent } from "@/lib/content"
 
 const footerLinks = [
@@ -13,11 +14,7 @@ const footerLinks = [
 ]
 
 export function Footer({ content }: { content: SiteContent }) {
-  const socialLinks = [
-    { icon: Facebook, href: content.facebookUrl, label: "Facebook" },
-    { icon: X, href: content.xUrl, label: "X" },
-    { icon: Instagram, href: content.instagramUrl, label: "Instagram" },
-  ].filter((s) => s.href)
+  const hasSocial = getSocialLinks(content).length > 0
 
   return (
     <footer className="bg-slate-900 text-white">
@@ -73,23 +70,10 @@ export function Footer({ content }: { content: SiteContent }) {
             </ul>
           </div>
 
-          {socialLinks.length > 0 && (
+          {hasSocial && (
             <div>
               <h3 className="font-semibold text-white mb-4">Síguenos</h3>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition-all"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="h-5 w-5" />
-                  </a>
-                ))}
-              </div>
+              <SocialLinks content={content} />
             </div>
           )}
         </div>
