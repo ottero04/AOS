@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import type { SiteContent } from "@/lib/content"
+import { SocialLinks, getSocialLinks } from "./social-links"
 
 export function ContactSection({ content }: { content: SiteContent }) {
   const [formData, setFormData] = useState({ nombre: "", email: "", mensaje: "", website: "" })
@@ -167,6 +168,13 @@ export function ContactSection({ content }: { content: SiteContent }) {
                 )
               })}
             </div>
+
+            {getSocialLinks(content).length > 0 && (
+              <div className="mt-8">
+                <p className="mb-3 text-sm font-medium text-slate-500">Síguenos</p>
+                <SocialLinks content={content} variant="light" />
+              </div>
+            )}
           </div>
         </div>
       </div>

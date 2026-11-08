@@ -1,38 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { hasDb, sql, logActivity } from "@/lib/db"
+import { sendEmailNotification } from "@/lib/notify"
 import { getClientIp } from "@/lib/auth"
 import { readJson, safeText } from "@/lib/security"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)
-}
-
-async function sendEmailNotification(nombre: string, email: string, mensaje: string) {
-  const apiKey = process.env.RESEND_API_KEY
-  const to = process.env.CONTACT_TO_EMAIL || "contactanos@aotesoft.com"
-  if (!apiKey) return
-  const from = process.env.CONTACT_FROM_EMAIL || "AOS Web <onboarding@resend.dev>"
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: email,
-        subject: `Nuevo mensaje de ${nombre} desde la web`,
-        html: `<p><strong>Nombre:</strong> ${escapeHtml(nombre)}</p>
-               <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-               <p><strong>Mensaje:</strong></p><p>${escapeHtml(mensaje).replace(/\n/g, "<br>")}</p>`,
-      }),
-    })
-    if (!res.ok) console.error("Resend error", res.status, await res.text())
-  } catch (e) {
-    console.error("Resend error", e)
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {

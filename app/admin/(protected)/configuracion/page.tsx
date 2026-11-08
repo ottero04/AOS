@@ -334,12 +334,16 @@ const FIELDS: { key: string; label: string; textarea?: boolean; placeholder?: st
   { key: "location", label: "Ubicación", group: "Contacto" },
   { key: "facebookUrl", label: "Facebook (enlace a tu página)", placeholder: "https://facebook.com/tu-pagina", group: "Redes sociales" },
   { key: "instagramUrl", label: "Instagram", placeholder: "https://instagram.com/tu-cuenta", group: "Redes sociales" },
+  { key: "tiktokUrl", label: "TikTok", placeholder: "https://www.tiktok.com/@tu-cuenta", group: "Redes sociales" },
   { key: "xUrl", label: "X (Twitter)", placeholder: "https://x.com/tu-cuenta", group: "Redes sociales" },
 ]
 
 function ContentTab() {
   const [content, setContent] = useState<Record<string, string> | null>(null)
   const [hasDb, setHasDb] = useState(true)
+  const [notifyEmail, setNotifyEmail] = useState("")
+  const [hasResend, setHasResend] = useState(false)
+  const [testMsg, setTestMsg] = useState("")
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState("")
   const [error, setError] = useState("")
@@ -350,6 +354,8 @@ function ContentTab() {
       .then((d) => {
         setContent(d.content)
         setHasDb(d.hasDb)
+        setNotifyEmail(d.notifyEmail ?? "")
+        setHasResend(Boolean(d.hasResend))
       })
   }, [])
 
@@ -361,7 +367,7 @@ function ContentTab() {
       const res = await fetch("/api/admin/content", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(content),
+        body: JSON.stringify({ ...content, notifyEmail }),
       })
       const d = await res.json()
       if (!res.ok) throw new Error(d.error || "Error al guardar")
@@ -391,6 +397,37 @@ function ContentTab() {
           Conecta la base de datos para poder guardar cambios.
         </div>
       )}
+      <div className="rounded-3xl border border-border bg-card p-6">
+        <h2 className="text-lg font-semibold text-foreground">Notificaciones por correo</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Cada mensaje del formulario de contacto llega a este correo con el asunto <code>[AOS Web]</code>. No se muestra en la página.
+        </p>
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="mb-1.5 block text-sm font-medium">Correo que recibe los mensajes</label>
+            <Input type="email" value={notifyEmail} placeholder="tucorreo@gmail.com" onChange={(e) => setNotifyEmail(e.target.value)} />
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={!hasResend}
+            onClick={async () => {
+              setTestMsg("Enviando...")
+              const r = await fetch("/api/admin/notify-test", { method: "POST" })
+              const d = await r.json().catch(() => ({}))
+              setTestMsg(r.ok ? "Correo de prueba enviado. Revisa tu bandeja (y spam)." : d.error || "No se pudo enviar")
+            }}
+          >
+            Enviar correo de prueba
+          </Button>
+        </div>
+        {!hasResend && (
+          <p className="mt-3 text-sm text-amber-700">Para activar el envío falta agregar <code>RESEND_API_KEY</code> en Vercel.</p>
+        )}
+        {testMsg && <p className="mt-3 text-sm text-muted-foreground">{testMsg}</p>}
+        <p className="mt-3 text-xs text-muted-foreground">Guarda los cambios antes de enviar la prueba.</p>
+      </div>
+
       {groups.map((g) => (
         <div key={g} className="rounded-3xl border border-border bg-card p-6">
           <h2 className="mb-4 text-lg font-semibold text-foreground">{g}</h2>

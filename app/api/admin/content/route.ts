@@ -1,13 +1,19 @@
 import { NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
-import { hasDb, setSetting, logActivity } from "@/lib/db"
+import { hasDb, setSetting, getSetting, logActivity } from "@/lib/db"
 import { DEFAULT_CONTENT, getSiteContent, type SiteContent } from "@/lib/content"
 import { requireAdmin, readJson, safeText, safeUrl } from "@/lib/security"
 
 export async function GET(request: Request) {
   const denied = await requireAdmin(request)
   if (denied) return denied
-  return NextResponse.json({ content: await getSiteContent(), hasDb: hasDb() })
+  const notify = hasDb() ? await getSetting<{ email: string }>("notifications").catch(() => null) : null
+  return NextResponse.json({
+    content: await getSiteContent(),
+    hasDb: hasDb(),
+    notifyEmail: notify?.email ?? "",
+    hasResend: Boolean(process.env.RESEND_API_KEY),
+  })
 }
 
 export async function PUT(request: Request) {
@@ -27,9 +33,14 @@ export async function PUT(request: Request) {
     location: safeText(b.location, 80),
     facebookUrl: safeUrl(b.facebookUrl),
     instagramUrl: safeUrl(b.instagramUrl),
+    tiktokUrl: safeUrl(b.tiktokUrl),
     xUrl: safeUrl(b.xUrl),
   }
   await setSetting("site_content", content)
+  if (typeof b.notifyEmail === "string") {
+    const email = safeText(b.notifyEmail, 160)
+    await setSetting("notifications", { email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "" })
+  }
   await logActivity("contenido_actualizado", "Textos del sitio")
   revalidatePath("/")
   return NextResponse.json({ success: true, content })
