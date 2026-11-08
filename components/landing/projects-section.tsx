@@ -1,14 +1,12 @@
-"use client";
-
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import projectsData from "@/data/projects.json";
+import { getPublishedProjects } from "@/lib/projects";
 
-export function ProjectsSection() {
-  const publishedProjects = projectsData.projects.filter(
-    (project) => project.status === "published",
-  );
+export async function ProjectsSection() {
+  // Se leen los proyectos guardados desde el panel (Vercel Blob),
+  // con respaldo en data/projects.json si no hay conexión.
+  const publishedProjects = await getPublishedProjects();
 
   return (
     <section id="proyectos" className="py-20 lg:py-28 bg-slate-50">
@@ -59,7 +57,7 @@ export function ProjectsSection() {
                     {project.shortDescription}
                   </p>
 
-                  {project.liveUrl && (
+                  {/^https?:\/\//.test(project.liveUrl || "") && (
                     <Button
                       asChild
                       variant="outline"

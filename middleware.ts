@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/session'
 
-export function middleware(request: NextRequest) {
+// Primera barrera: sin una sesión firmada válida, el panel responde 404
+// (nadie sabe que existe). La revocación de sesiones se verifica además
+// en el servidor contra la base de datos.
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (pathname === '/admin/login') {
@@ -8,13 +12,9 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith('/admin')) {
-    const session = request.cookies.get('aos_admin_session')
-    if (!session) {
-      // Opción 1 — mostrar 404 (nadie sabe que existe)
+    const valid = await verifySessionToken(request.cookies.get(SESSION_COOKIE_NAME)?.value)
+    if (!valid) {
       return NextResponse.rewrite(new URL('/not-found', request.url))
-
-      // Opción 2 — redirigir al login (comportamiento actual)
-      // return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }
 
@@ -22,5 +22,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*']
+  matcher: ['/admin/:path*'],
 }

@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation"
 import { 
   LayoutDashboard, 
   FolderKanban, 
+  Workflow,
+  Inbox,
   Settings, 
   LogOut,
   Menu,
@@ -28,6 +30,18 @@ const navItems = [
     href: "/admin/proyectos",
     icon: FolderKanban,
     description: "Gestionar proyectos",
+  },
+  {
+    label: "Automatizaciones",
+    href: "/admin/automatizaciones",
+    icon: Workflow,
+    description: "AOS Flow e informes",
+  },
+  {
+    label: "Mensajes",
+    href: "/admin/mensajes",
+    icon: Inbox,
+    description: "Formulario de contacto",
   },
   {
     label: "Configuracion",

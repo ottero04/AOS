@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Lock, Eye, EyeOff, ArrowLeft, Shield } from "lucide-react";
+import { Lock, Eye, EyeOff, ArrowLeft, Shield, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [code, setCode] = useState("");
+  const [needsCode, setNeedsCode] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,16 +27,19 @@ export default function LoginPage() {
       const response = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, code: needsCode ? code : undefined }),
         credentials: "include",
       });
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.requires2fa && !data.success) {
+        setNeedsCode(true);
+      } else if (response.ok) {
         router.push("/admin");
         router.refresh();
       } else {
+        if (data.requires2fa) setCode("");
         setError(data.error || "Credenciales invalidas");
       }
     } catch (err) {
@@ -164,6 +169,31 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
+
+            {needsCode && (
+              <div>
+                <label className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <Smartphone className="h-4 w-4" />
+                  Código de verificación
+                </label>
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="[0-9]{6}"
+                  maxLength={6}
+                  placeholder="123456"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+                  required
+                  autoFocus
+                  className="h-14 rounded-xl border-border bg-muted/30 px-5 text-center text-2xl tracking-[0.5em] transition-all duration-200 focus:border-primary focus:bg-background focus:ring-2 focus:ring-primary/20"
+                />
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Abre tu app autenticadora (Google Authenticator, etc.) y escribe el código de 6 dígitos.
+                </p>
+              </div>
+            )}
 
             {error && (
               <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-sm font-medium text-destructive">
