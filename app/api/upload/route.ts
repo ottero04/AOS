@@ -1,20 +1,16 @@
 import { put } from '@vercel/blob'
 import { type NextRequest, NextResponse } from 'next/server'
-import { isAuthenticated } from '@/lib/auth'
+import { requireAdmin } from '@/lib/security'
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify user authentication
-    const authenticated = await isAuthenticated()
-    
-    if (!authenticated) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
+    const denied = await requireAdmin(request)
+    if (denied) return denied
 
     const formData = await request.formData()
-    const file = formData.get('file') as File
+    const file = formData.get('file')
 
-    if (!file) {
+    if (!file || !(file instanceof File)) {
       return NextResponse.json({ error: 'No se proporcionó archivo' }, { status: 400 })
     }
 
@@ -31,7 +27,13 @@ export async function POST(request: NextRequest) {
 
     // Generate unique filename
     const timestamp = Date.now()
-    const extension = file.name.split('.').pop()
+    const extensions: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/gif': 'gif',
+    }
+    const extension = extensions[file.type]
     const filename = `projects/${timestamp}.${extension}`
 
     // Upload to Vercel Blob (public access for images)

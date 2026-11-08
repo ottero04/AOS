@@ -6,7 +6,7 @@ import {
   Monitor,
   Smartphone,
   Database,
-  Headphones
+  Workflow
 } from "lucide-react"
 
 const services = [
@@ -27,8 +27,8 @@ const services = [
   },
   {
     icon: Wrench,
-    title: "Mantenimiento",
-    description: "Soporte continuo para mantener tus sistemas optimos.",
+    title: "Mantenimiento y Soporte",
+    description: "Soporte continuo y asistencia para mantener tus sistemas óptimos.",
   },
   {
     icon: Monitor,
@@ -46,9 +46,11 @@ const services = [
     description: "Diseño y optimizacion de bases de datos.",
   },
   {
-    icon: Headphones,
-    title: "Soporte Tecnico",
-    description: "Asistencia tecnica para resolver cualquier problema.",
+    icon: Workflow,
+    title: "Automatización",
+    description: "Tus correos, informes y documentos se procesan solos.",
+    href: "#automatizacion",
+    highlight: true,
   },
 ]
 
@@ -71,11 +73,21 @@ export function ServicesSection() {
 
         {/* Services Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service) => (
-            <div
+          {services.map((service: any) => {
+            const Wrapper: any = service.href ? "a" : "div"
+            return (
+            <Wrapper
               key={service.title}
-              className="group p-6 rounded-xl bg-slate-50 border border-slate-200 hover:bg-blue-600 hover:border-blue-600 transition-all duration-300"
+              {...(service.href ? { href: service.href } : {})}
+              className={`group relative p-6 rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-blue-600 hover:border-blue-600 ${
+                service.highlight ? "bg-cyan-50 border-cyan-300 ring-1 ring-cyan-200" : "bg-slate-50 border-slate-200"
+              }`}
             >
+              {service.highlight && (
+                <span className="absolute right-4 top-4 rounded-full bg-cyan-500 px-2.5 py-0.5 text-xs font-semibold text-white group-hover:bg-white group-hover:text-blue-600">
+                  Nuevo
+                </span>
+              )}
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 group-hover:bg-white/20 transition-colors">
                 <service.icon className="h-6 w-6 text-blue-600 group-hover:text-white transition-colors" />
               </div>
@@ -85,8 +97,9 @@ export function ServicesSection() {
               <p className="mt-2 text-sm text-slate-500 group-hover:text-blue-100 transition-colors">
                 {service.description}
               </p>
-            </div>
-          ))}
+            </Wrapper>
+            )
+          })}
         </div>
       </div>
     </section>
