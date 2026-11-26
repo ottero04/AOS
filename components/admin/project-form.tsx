@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import { Upload, X, Plus, Star, Loader2 } from "lucide-react"
+import { Upload, X, Plus, Star, Loader2, Images } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -74,6 +74,8 @@ export function ProjectForm({ project, open, onOpenChange, onSave }: ProjectForm
   const [saving, setSaving] = useState<"draft" | "published" | null>(null)
   const [uploading, setUploading] = useState<"main" | "extra" | null>(null)
   const [error, setError] = useState("")
+  const [picker, setPicker] = useState<null | "main" | "extra">(null)
+  const [uploaded, setUploaded] = useState<{ url: string; uploadedAt: string }[] | null>(null)
   const mainInput = useRef<HTMLInputElement>(null)
   const extraInput = useRef<HTMLInputElement>(null)
 
@@ -84,6 +86,22 @@ export function ProjectForm({ project, open, onOpenChange, onSave }: ProjectForm
       setError("")
     }
   }, [open, project])
+
+  async function openPicker(target: "main" | "extra") {
+    setPicker(target)
+    if (uploaded === null) {
+      const res = await fetch("/api/admin/uploads")
+      const data = await res.json().catch(() => ({}))
+      setUploaded(res.ok ? data.images ?? [] : [])
+    }
+  }
+
+  function pick(url: string) {
+    if (picker === "main") set("mainImage", url)
+    else if (picker === "extra" && !form.additionalImages.includes(url) && form.additionalImages.length < 6)
+      set("additionalImages", [...form.additionalImages, url])
+    setPicker(null)
+  }
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setForm((f) => ({ ...f, [key]: value }))
@@ -235,6 +253,14 @@ export function ProjectForm({ project, open, onOpenChange, onSave }: ProjectForm
                 </div>
               )}
             </div>
+            <button
+              type="button"
+              onClick={() => openPicker("main")}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary hover:underline"
+            >
+              <Images className="h-4 w-4" />
+              Elegir de las imágenes ya subidas
+            </button>
             <input ref={mainInput} type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={handleMain} className="hidden" />
           </div>
 
@@ -266,6 +292,16 @@ export function ProjectForm({ project, open, onOpenChange, onSave }: ProjectForm
                 </button>
               )}
             </div>
+            {form.additionalImages.length < 6 && (
+              <button
+                type="button"
+                onClick={() => openPicker("extra")}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary hover:underline"
+              >
+                <Images className="h-4 w-4" />
+                Agregar de las imágenes ya subidas
+              </button>
+            )}
             <input ref={extraInput} type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif" onChange={handleExtra} className="hidden" />
           </div>
 
@@ -279,6 +315,40 @@ export function ProjectForm({ project, open, onOpenChange, onSave }: ProjectForm
             </div>
             <Switch checked={form.featured} onCheckedChange={(v) => set("featured", v)} />
           </div>
+
+          {picker && (
+            <div className="rounded-xl border border-border bg-muted/30 p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-sm font-semibold">
+                  {picker === "main" ? "Elige la imagen principal" : "Elige una imagen para la galería"}
+                </p>
+                <button type="button" onClick={() => setPicker(null)} className="text-sm text-muted-foreground hover:text-foreground">
+                  Cerrar
+                </button>
+              </div>
+              {uploaded === null ? (
+                <div className="flex h-24 items-center justify-center text-sm text-muted-foreground">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Cargando...
+                </div>
+              ) : uploaded.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">No hay imágenes subidas todavía.</p>
+              ) : (
+                <div className="grid max-h-72 grid-cols-3 gap-2 overflow-y-auto sm:grid-cols-4">
+                  {uploaded.map((img) => (
+                    <button
+                      key={img.url}
+                      type="button"
+                      onClick={() => pick(img.url)}
+                      title={new Date(img.uploadedAt).toLocaleString("es-CO")}
+                      className="relative aspect-video overflow-hidden rounded-lg border-2 border-transparent hover:border-secondary"
+                    >
+                      <Image src={img.url} alt="" fill sizes="160px" className="object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {error && <p className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
 

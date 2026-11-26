@@ -73,6 +73,20 @@ CREATE TABLE IF NOT EXISTS automations (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS projects (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  short_description TEXT NOT NULL DEFAULT '',
+  long_description TEXT NOT NULL DEFAULT '',
+  main_image TEXT NOT NULL DEFAULT '',
+  additional_images JSONB NOT NULL DEFAULT '[]'::jsonb,
+  live_url TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'draft',
+  featured BOOLEAN NOT NULL DEFAULT false,
+  tags JSONB NOT NULL DEFAULT '[]'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 CREATE TABLE IF NOT EXISTS activity_log (
   id BIGSERIAL PRIMARY KEY,
   action TEXT NOT NULL,
